@@ -28,4 +28,3 @@ async def role_unban(intrecation: discord.Interaction, roleban_id: int):
             await intrecation.response.send_message(f'Джоббан {roleban_id} снят.')
         else: 
             await intrecation.response.send_message('Такого джоббана нет.')
-    
