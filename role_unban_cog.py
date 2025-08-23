@@ -34,11 +34,14 @@ class RoleUnBanCog(commands.Cog):
         with Session(engine) as session:
             # Ищу строку с подходящим айди джоббана
             row = session.query(Ban).filter(Ban.server_role_ban_id == roleban_id).first()
-            if row:
+            exists = session.query(Unban).filter(Unban.role_unban_id == roleban_id).first()
+            if row and not exists:
                 # Записываю эту строку в таблицу анбана
                 new_row = Unban(role_unban_id=roleban_id, ban_id=roleban_id, unban_time=datetime.now().isoformat(), unbanning_admin=username)
                 session.add(new_row)
                 session.commit()
                 await ctx.respond(f'Джоббан {roleban_id} снят.')
-            else: 
-                await  ctx.respond('Такого джоббана нет.')
+            if not row: 
+                await ctx.respond('Такого джоббана нет.')
+            if exists:
+                await ctx.respond('Этот джоббан уже снят.')
