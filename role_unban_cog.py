@@ -28,7 +28,7 @@ class RoleUnBanCog(commands.Cog):
         self.bot = bot
         
     @commands.message_command(name='role_unban', description='Снятие джоббана')
-    async def role_unban(interaction: discord.Interaction, roleban_id: int):
+    async def role_unban(self, interaction: discord.Interaction, roleban_id: int):
         username = interaction.user.display_name
         with Session(engine) as session:
             # Ищу строку с подходящим айди джоббана
