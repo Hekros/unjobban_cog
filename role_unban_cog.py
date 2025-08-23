@@ -1,11 +1,12 @@
+import os
 import discord
 from discord.ext import commands
 from datetime import datetime
+from dotenv import load_dotenv
 from sqlalchemy import create_engine, Column, Integer, Text, DateTime
 from sqlalchemy.orm import Session, DeclarativeBase
 
 engine = create_engine(r"sqlite:///C:\Users\sam92\Downloads\SS14.Server_win-x64\data\preferences.db", echo=True)
-
 # Базовый класс для создания таблиц
 class Base(DeclarativeBase):
     pass
