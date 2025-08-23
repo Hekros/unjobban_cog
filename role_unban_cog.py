@@ -28,9 +28,9 @@ class RoleUnBanCog(commands.Cog):
     def __init__(self, bot: discord.Bot):
         self.bot = bot
         
-    @commands.message_command(name='role_unban', description='Снятие джоббана')
-    async def role_unban(self, interaction: discord.Interaction, roleban_id: int):
-        username = interaction.user.display_name
+    @commands.slash_command(name='role_unban', description='Снятие джоббана')
+    async def role_unban(self, ctx: discord.ApplicationContext, roleban_id: int):
+        username = ctx.author.name
         with Session(engine) as session:
             # Ищу строку с подходящим айди джоббана
             row = session.query(Ban).filter(Ban.server_role_ban_id == roleban_id).first()
@@ -39,6 +39,6 @@ class RoleUnBanCog(commands.Cog):
                 new_row = Unban(role_unban_id=roleban_id, ban_id=roleban_id, unban_time=datetime.now().isoformat(), unbanning_admin=username)
                 session.add(new_row)
                 session.commit()
-                await interaction.response.send_message(f'Джоббан {roleban_id} снят.')
+                await ctx.respond(f'Джоббан {roleban_id} снят.')
             else: 
-                await interaction.response.send_message('Такого джоббана нет.')
+                await  ctx.respond('Такого джоббана нет.')
