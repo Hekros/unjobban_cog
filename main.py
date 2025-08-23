@@ -11,13 +11,16 @@ intents.message_content = True
 
 bot = commands.Bot(intents=intents)
 
+# Базовый класс для создания таблиц
 class Base(DeclarativeBase):
     pass
 
+# Воссоздаю айди джоббанов из таблицы
 class Ban(Base):
     __tablename__ = 'server_role_ban'
     server_role_ban_id = Column(Integer, primary_key=True, nullable=False)
 
+# Воссоздаю анбаны из таблицы полностью
 class Unban(Base):
     __tablename__ = 'server_role_unban'
     role_unban_id = Column(Integer, primary_key=True, nullable=False)
@@ -29,8 +32,10 @@ class Unban(Base):
 async def role_unban(interaction: discord.Interaction, roleban_id: int):
     username = interaction.user.display_name
     with Session(engine) as session:
+        # Ищу строку с подходящим айди джоббана
         row = session.query(Ban).filter(Ban.server_role_ban_id == roleban_id).first()
         if row:
+            # Записываю эту строку в таблицу анбана
             new_row = Unban(role_unban_id=roleban_id, ban_id=roleban_id, unban_time=datetime.now().isoformat(), unbanning_admin=username)
             session.add(new_row)
             session.commit()
