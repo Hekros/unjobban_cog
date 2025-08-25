@@ -1,7 +1,10 @@
 import discord
 from discord.ext import commands
 from datetime import datetime
+
+from sqlalchemy import select
 from data import *
+from sqlalchemy.orm import Session
 
 class RoleUnBanCog(commands.Cog):
     def __init__(self, bot: discord.Bot):
@@ -12,8 +15,8 @@ class RoleUnBanCog(commands.Cog):
         username = ctx.author.name
         with Session(engine) as session:
             # Ищу строку с подходящим айди джоббана
-            row = session.query(Ban).filter(Ban.server_role_ban_id == roleban_id).first()
             exists = session.query(Unban).filter(Unban.role_unban_id == roleban_id).first()
+            row = session.execute(select(Ban.hwid).where(Ban.server_role_ban_id == roleban_id)).all()
             if row and not exists:
                 # Записываю эту строку в таблицу анбана
                 new_row = Unban(role_unban_id=roleban_id, ban_id=roleban_id, unban_time=datetime.now().isoformat(), unbanning_admin=username)
