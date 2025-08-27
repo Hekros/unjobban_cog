@@ -40,7 +40,7 @@ class RoleUnBanCog(commands.Cog):
             if count != 0:
                 await ctx.respond(f'Джоббан с игрока {ckey} снят.')
             else:
-                await ctx.respond('Что-то пошло не так.')
+                await ctx.respond('Такого джоббана нет.')
             # else:
             #     unbans = session.execute(select(Ban).join(Unban, Ban.server_role_ban_id == Unban.ban_id).where(Ban.player_user_id == find_user_id)).scalars()
             #     if count(unbans) == 0:
