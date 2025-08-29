@@ -26,13 +26,12 @@ class RoleUnBanCog(commands.Cog):
                 await ctx.respond('Такого сикея нет.')
             else:
                 bans = await session.execute(select(Ban).outerjoin(Unban, Ban.server_role_ban_id == Unban.ban_id).where(Ban.player_user_id == find_user_id).filter(Unban.ban_id == None)).scalars()
-
                 for ban in bans:
                     if ban.role_id in ROLES[department]:
                         await session.execute(insert(Unban).values(ban_id = ban.server_role_ban_id, unban_time = datetime.datetime.now().isoformat(), unbanning_admin = username))
                         count += 1
                 await session.commit()
                 if count != 0:
-                    await ctx.respond(f'Джоббан с игрока {ckey} снят.')
+                    await ctx.respond(f'Джоббан с отдела {department} снят.')
                 else:
                     await ctx.respond('Такого джоббана нет.')
