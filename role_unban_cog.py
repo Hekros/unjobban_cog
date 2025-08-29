@@ -32,6 +32,6 @@ class RoleUnBanCog(commands.Cog):
                         count += 1
                 await session.commit()
                 if count != 0:
-                    await ctx.respond(f'Джоббан с игрока {ckey} снят.')
+                    await ctx.respond(f'Джоббан с отдела {department} снят.')
                 else:
                     await ctx.respond('Такого джоббана нет.')
