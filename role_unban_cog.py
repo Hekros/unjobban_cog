@@ -39,6 +39,3 @@ class RoleUnBanCog(commands.Cog):
                     await ctx.respond(f'✅ Джоббан с отдела {department} снят.')
                 if count == 0:
                     await ctx.respond('❌ Такого джоббана нет.')
-    @commands.slash_command(name='id')
-    async def id(self, ctx: discord.ApplicationContext):
-        await ctx.respond(ctx.author.id)
