@@ -25,19 +25,20 @@ class RoleUnBanCog(commands.Cog):
             find_user_id = find_user_i.scalar_one_or_none()
             count = 0
             if not find_user_id:
-                await ctx.respond('Такого сикея нет.')
+                await ctx.respond('❌ Такого сикея нет.')
             else:
                 banss = await session.execute(select(Ban).outerjoin(Unban, Ban.server_role_ban_id == Unban.ban_id).where(Ban.player_user_id == find_user_id).filter(Unban.ban_id == None))
                 bans = banss.scalars()
+                exists = await session.execute(select(Unban.ban_id).where(Unban.ban_id == Ban.server_role_ban_id))
                 for ban in bans:
                     if ban.role_id in ROLES[department]:
                         await session.execute(insert(Unban).values(ban_id = ban.server_role_ban_id, unban_time = datetime.datetime.now().isoformat(), unbanning_admin = username))
                         count += 1
                 await session.commit()
                 if count != 0:
-                    await ctx.respond(f'Джоббан с отдела {department} снят.')
-                else:
-                    await ctx.respond('Такого джоббана нет.')
+                    await ctx.respond(f'✅ Джоббан с отдела {department} снят.')
+                if count == 0:
+                    await ctx.respond('❌ Такого джоббана нет.')
     @commands.slash_command(name='id')
     async def id(self, ctx: discord.ApplicationContext):
         await ctx.respond(ctx.author.id)
