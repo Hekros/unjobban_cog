@@ -38,4 +38,4 @@ class RoleUnBanCog(commands.Cog):
                 if count != 0:
                     await ctx.respond(f'✅ Джоббан с отдела {department} снят.')
                 if count == 0:
-                    await ctx.respond('❌ Такого джоббана нет.')
+                    await ctx.respond('❌ Такого джоббана отдела нет.')
