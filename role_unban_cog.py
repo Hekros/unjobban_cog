@@ -29,8 +29,8 @@ class RoleUnBanCog(commands.Cog):
                 await ctx.respond('❌ Такого сикея нет.')
                 return
             banss = await session.execute(select(Ban).outerjoin(Unban, Ban.server_role_ban_id == Unban.ban_id).where(
-                Ban.player_user_id == find_user_id, Unban.ban_id == None, Ban.role_id.in_(ROLES[department])
-                ))
+                Ban.player_user_id == find_user_id, Unban.ban_id == None, Ban.role_id.in_(ROLES[department]))
+            )
             bans = banss.scalars()
             for ban in bans:
                 if ban.role_id in ROLES[department]:
