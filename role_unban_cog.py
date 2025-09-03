@@ -18,6 +18,7 @@ class RoleUnBanCog(commands.Cog):
     async def role_unban(self, ctx: discord.ApplicationContext,
                          ckey: Option(str, 'Введите сикей'), # type: ignore
                          department: Option(str, 'Выберите отдел', choices=dict.keys(ROLES))): # type: ignore
+        await ctx.defer()
         a = await player_api.get_player_info(discord_id=ctx.author.id)
         admin_user_id = a.get("userId")
         async with async_session() as session:
@@ -28,8 +29,7 @@ class RoleUnBanCog(commands.Cog):
                 await ctx.respond('❌ Такого сикея нет.')
                 return
             banss = await session.execute(select(Ban).outerjoin(Unban, Ban.server_role_ban_id == Unban.ban_id).where(
-                Ban.player_user_id == find_user_id, Unban.ban_id == None,
-                # Ban.role_id == ROLES[department
+                Ban.player_user_id == find_user_id, Unban.ban_id == None, Ban.role_id.in_(ROLES[department])
                 ))
             bans = banss.scalars()
             for ban in bans:
