@@ -6,7 +6,7 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 import datetime
 
-engine = create_async_engine(r"sqlite+aiosqlite:///C:\Users\sam92\Downloads\SS14.Server_win-x64\data\preferences.db", echo=False)
+engine = create_async_engine(r"postgresql+asyncpg://postgres:topanbro228@localhost:8000/C:\Users\sam92\Downloads\SS14.Server_win-x64\data\preferences.db", echo=False)
 
 async_session = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
