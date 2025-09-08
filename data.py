@@ -6,7 +6,8 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 import datetime
 
-engine = create_async_engine(r"postgresql+asyncpg://postgres:topanbro228@localhost:8000/C:\Users\sam92\Downloads\SS14.Server_win-x64\data\preferences.db", echo=False)
+engine = create_async_engine(r"postgresql+asyncpg://postgres:pass@localhost:8000/C:\Users\sam92\Downloads\SS14.Server_win-x64\data\preferences.db", echo=False)
+engine.connect()
 
 async_session = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
@@ -38,3 +39,4 @@ class Player(Base):
     last_seen_address: Mapped[int] = mapped_column(nullable=False)
     last_seen_hwid: Mapped[str]
     last_read_rules: Mapped[datetime.datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+Base.metadata.create_all(engine)
